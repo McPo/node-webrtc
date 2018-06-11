@@ -60,7 +60,7 @@ PeerConnection::PeerConnection(webrtc::PeerConnectionInterface::IceServers iceSe
   _factory = PeerConnectionFactory::GetOrCreateDefault();
   _shouldReleaseFactory = true;
 
-  _jinglePeerConnection = _factory->factory()->CreatePeerConnection(configuration, nullptr, nullptr, nullptr, this);
+  _jinglePeerConnection = _factory->factory()->CreatePeerConnection(configuration, nullptr, nullptr, this);
 
   uv_mutex_init(&lock);
   uv_async_init(loop, &async, reinterpret_cast<uv_async_cb>(Run));
@@ -132,10 +132,11 @@ void PeerConnection::Run(uv_async_t* handle, int status) {
     } else if (PeerConnection::GET_STATS_SUCCESS & evt.type) {
       PeerConnection::GetStatsEvent* data = static_cast<PeerConnection::GetStatsEvent*>(evt.data);
       Nan::Callback* callback = data->callback;
-      Local<Value> cargv[1];
-      cargv[0] = Nan::New<External>(static_cast<void*>(&data->reports));
+      Local<Value> cargv[2];
+      cargv[0] = Nan::New<External>(static_cast<void*>(&data->timestamp));
+      cargv[1] = Nan::New<External>(static_cast<void*>(&data->reports));
       Local<Value> argv[1];
-      argv[0] = Nan::New(RTCStatsResponse::constructor)->NewInstance(1, cargv);
+      argv[0] = Nan::New(RTCStatsResponse::constructor)->NewInstance(2, cargv);
       callback->Call(1, argv);
       delete data;
     } else if (PeerConnection::VOID_EVENT & evt.type) {
@@ -469,13 +470,13 @@ void PeerConnection::OnDataChannel(rtc::scoped_refptr<webrtc::DataChannelInterfa
   TRACE_END;
 }
 
-void PeerConnection::OnAddStream(webrtc::MediaStreamInterface* stream) {
+void PeerConnection::OnAddStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream) {
   TRACE_CALL;
   QueueEvent(PeerConnection::NOTIFY_ADD_STREAM, static_cast<void*>(stream));
   TRACE_END;
 }
 
-void PeerConnection::OnRemoveStream(webrtc::MediaStreamInterface* stream) {
+void PeerConnection::OnRemoveStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream) {
   TRACE_CALL;
 
   QueueEvent(PeerConnection::NOTIFY_REMOVE_STREAM, static_cast<void*>(stream));
