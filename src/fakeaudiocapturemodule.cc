@@ -8,10 +8,10 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#include "webrtc/api/test/fakeaudiocapturemodule.h"
+#include "webrtc/pc/test/fakeaudiocapturemodule.h"
 
 #include "webrtc/base/checks.h"
-#include "webrtc/base/common.h"
+#include "common.h"
 #include "webrtc/base/refcount.h"
 #include "webrtc/base/thread.h"
 #include "webrtc/base/timeutils.h"

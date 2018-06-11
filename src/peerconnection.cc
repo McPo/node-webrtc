@@ -222,7 +222,7 @@ void PeerConnection::Run(uv_async_t* handle, int status) {
       }
     }
     else if(PeerConnection::NOTIFY_ON_FRAME & evt.type) {
-      VideoFrameEvent* event = static_cast<VideoFrameEvent*>(evt.data);
+      /*VideoFrameEvent* event = static_cast<VideoFrameEvent*>(evt.data);
 
       Local<Function> callback = Local<Function>::Cast(pc->Get(Nan::New("onvideoframe").ToLocalChecked()));
       if(callback->IsFunction()) {
@@ -241,7 +241,7 @@ void PeerConnection::Run(uv_async_t* handle, int status) {
 
         Nan::MakeCallback(pc, callback, 6, cargv);
       }
-      delete event;
+      delete event;*/
     }
     else if(PeerConnection::NOTIFY_ON_ENCODED_FRAME & evt.type) {
       EncodedVideoFrameEvent* event = static_cast<EncodedVideoFrameEvent*>(evt.data);

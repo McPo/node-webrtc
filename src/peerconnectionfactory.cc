@@ -12,7 +12,7 @@
 #include "common.h"
 
 #include "webrtc/api/audio/audio_mixer.h"
-#include "webrtc/api/test/fakeaudiocapturemodule.h"
+#include "webrtc/pc/test/fakeaudiocapturemodule.h"
 
 using node_webrtc::PeerConnectionFactory;
 using v8::External;
